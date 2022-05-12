@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Navbar from './Pages/Shared/Navbar';
 import Home from './Pages/Home/Home';
 import About from './Pages/About/About';
-import Appointment from './Pages/Home/Appointment';
+import Appointment from './Pages/Appointment/Appointment';
 
 
 function App() {
