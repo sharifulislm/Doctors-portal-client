@@ -9,14 +9,14 @@ const AvailableAppointments = ({date}) => {
 
 
     useEffect( () => {
-        fetch('Services.json')
+        fetch('http://localhost:5000/services')
         .then(res => res.json())
         .then(data => setSercices(data))
     } ,[])
     return (
         <div>
             
-             <h4 className='text-xl text-secondary text-center'>  Available Appointments on:{format(date, 'PP')}</h4>
+             <h4 className='text-xl text-secondary text-center my-12'>  Available Appointments on:{format(date, 'PP')}</h4>
              
              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
                  {
@@ -25,7 +25,7 @@ const AvailableAppointments = ({date}) => {
                  }
              </div>
              {
-                 treatment && <BookingModal treatment={treatment}></BookingModal>
+                 treatment && <BookingModal date={date} treatment={treatment} setTreatment={setTreatment} ></BookingModal>
              }
             
         </div>
