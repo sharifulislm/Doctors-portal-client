@@ -5,9 +5,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 
-
-const Login = () => {
-  const { register, formState: { errors }, handleSubmit } = useForm();
+const Signup = () => {
+    const { register, formState: { errors }, handleSubmit } = useForm();
 
 
     const [handlesinupwithgoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
@@ -43,12 +42,11 @@ const Login = () => {
       console.log(data)
       signInWithEmailAndPassword(data.email, data.Password)
     }
-
     return (
         <div className='flex h-screen justify-center items-center'>
         <div className="card w-96 bg-base-100 shadow-xl">
   <div className="card-body">
-    <h2 className="card-title">Login</h2>
+    <h2 className="card-title">Sign Up</h2>
     <form onSubmit={handleSubmit(onSubmit)}>
 
     <div class="form-control w-full max-w-xs">
@@ -110,9 +108,9 @@ const Login = () => {
 
 </div>
 {signInError}
-      <input className='btn w-full max-w-xs text-white' type="submit" value="Login" />
+      <input className='btn w-full max-w-xs text-white' type="submit" value="SIGNUP" />
     </form>
-    <p><small>New to Doctors Portal <Link className='text-primary' to="/signup">Create New Account</Link></small></p>
+    <p><small>Already have an account? <Link className='text-primary' to="/Login">Please Login</Link></small></p>
     <div className="divider">OR</div>
 
     <button onClick={() => handlesinupwithgoogle()} className="btn btn-outline ">Continue with google</button>
@@ -124,4 +122,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Signup;
