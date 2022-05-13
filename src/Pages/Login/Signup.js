@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+
 import Loading from '../Shared/Loading';
 
 const Signup = () => {
@@ -10,13 +11,14 @@ const Signup = () => {
 
 
     const [handlesinupwithgoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [updateProfile, updating, Uperror] = useUpdateProfile(auth);
 
     const [
-      signInWithEmailAndPassword,
-      user,
-      loading,
-      error,
-    ] = useSignInWithEmailAndPassword(auth);
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+        error,
+      ] = useCreateUserWithEmailAndPassword(auth);
 
     let signInError;
     const navigate = useNavigate();
@@ -27,20 +29,25 @@ const Signup = () => {
     useEffect( () =>{
       if (user || gUser) {
           navigate(from, { replace: true });
+          console.log(user);
       }
   }, [user, gUser, from, navigate])
 
-  if (loading || gLoading) {
+  if (loading || gLoading ||updating) {
       return <Loading></Loading>
   }
 
-  if(error || gError){
+  if(error || gError ||Uperror){
       signInError= <p className='text-red-500'><small>{error?.message || gError?.message }</small></p>
+      console.log(error);
   }
 
-    const onSubmit = data => {
-      console.log(data)
-      signInWithEmailAndPassword(data.email, data.Password)
+    const onSubmit = async data => {
+
+     await createUserWithEmailAndPassword(data.email, data.password)
+      await updateProfile({ displayName:data.name });
+      console.log('profile is update');
+      navigate('/appointment');
     }
     return (
         <div className='flex h-screen justify-center items-center'>
@@ -49,14 +56,40 @@ const Signup = () => {
     <h2 className="card-title">Sign Up</h2>
     <form onSubmit={handleSubmit(onSubmit)}>
 
-    <div class="form-control w-full max-w-xs">
-  <label class="label">
-    <span class="label-text">Email</span>
+    <div className="form-control w-full max-w-xs">
+  <label className="label">
+    <span className="label-text">Name</span>
+
+  
+  </label>
+  <input type="text" placeholder="name"
+   className="input input-bordered w-full max-w-xs"
+   {...register("name",
+    {
+       required: {
+         value: true,
+         message: 'Name is required'
+       },
+   
+  })}
+
+
+   />
+        <label className="label">
+        {errors.name?.type === 'required' && <span className="label-text-alt text-red-500">{errors.name.message}</span>}
+
+  
+  </label>
+
+</div>
+    <div className="form-control w-full max-w-xs">
+  <label className="label">
+    <span className="label-text">Email</span>
 
   
   </label>
   <input type="email" placeholder="email"
-   class="input input-bordered w-full max-w-xs"
+   className="input input-bordered w-full max-w-xs"
    {...register("email",
     {
        required: {
@@ -71,22 +104,22 @@ const Signup = () => {
 
 
    />
-        <label class="label">
-    {errors.email?.type === 'required' &&     <span class="label-text text-red-500">{error.email.message}</span>}
-    {errors.email?.type === ' pattern' &&     <span class="label-text text-red-500">{error.email.message}</span>}
+        <label className="label">
+        {errors.email?.type === 'required' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
+         {errors.email?.type === 'pattern' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
   
   </label>
 
 </div>
-    <div class="form-control w-full max-w-xs">
-  <label class="label">
-    <span class="label-text">Password</span>
+    <div className="form-control w-full max-w-xs">
+  <label className="label">
+    <span className="label-text">Password</span>
 
   
   </label>
   <input type="Password" placeholder="Password"
-   class="input input-bordered w-full max-w-xs"
-   {...register("Password",
+   className="input input-bordered w-full max-w-xs"
+   {...register("password",
     {
        required: {
          value: true,
@@ -100,9 +133,9 @@ const Signup = () => {
 
 
    />
-        <label class="label">
-    {errors.Password?.type === 'required' &&     <span class="label-text text-red-500">{error.Password.message}</span>}
-    {errors.Password?.type === ' minLength' &&     <span class="label-text text-red-500">{error.Password.message}</span>}
+        <label className="label">
+        {errors.password?.type === 'required' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
+         {errors.password?.type === 'minLength' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
   
   </label>
 
