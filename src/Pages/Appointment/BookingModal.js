@@ -2,17 +2,51 @@ import React from 'react';
 import { format } from 'date-fns';
 import auth from '../../firebase.init';
 import { useAuthState } from 'react-firebase-hooks/auth';
-const BookingModal = ({date,treatment,setTreatment}) => {
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const BookingModal = ({date,treatment,setTreatment,refetch}) => {
     const {_id, name, slots} = treatment;
     const [user, loading] = useAuthState(auth);
-    console.log(user);
-
+   
+     const formatedDate = format(date, 'PP');
 
  const handleBooking = event => {
      event.preventDefault()
      const slot = event.target.slot.value;
-     console.log(slot,_id,name);
-     setTreatment(null);
+     const booking = {
+         treatmentId: _id,
+         treatment : name,
+         date: formatedDate,
+         slot,
+         patient:user.email,
+         patientName:user.displayName,
+         phone: event.target.phone.value
+     }
+
+     fetch('http://localhost:5000/booking', {
+         method: 'POST',
+         headers: {
+             'content-type': 'application/json'
+         },
+         body: JSON.stringify(booking)
+     })
+     .then(res => res.json())
+     .then(data => {
+console.log(data);
+  if(data.success){
+      toast(`Appointment is set, ${formatedDate} at ${slot}`)
+  }
+  else{
+    toast.error(`Already gave and Appointment on, ${data.booking?.data} at ${data.booking.slot}`)
+  }
+  refetch(refetch)
+  setTreatment(null);
+     })
+  
+
+
+   
 
  }
 
@@ -33,14 +67,16 @@ const BookingModal = ({date,treatment,setTreatment}) => {
  </select>
     <input type="Name" name='name' disabled value={user?.displayName} placeholder="Your name" className="input input-bordered w-full max-w-xs" />
     <input type="email" placeholder="Email" disabled value={user?.email} className="input input-bordered w-full max-w-xs" />
-    <input type="text" placeholder="phone" className="input input-bordered w-full max-w-xs" />
+    <input type="text" placeholder="phone" name='phone' className="input input-bordered w-full max-w-xs" />
     <input type="submit" value="Submit" className="btn btn-secondary text-white w-full max-w-xs" />
     </form>
+
 
   </div>
 </div>
             
         </div>
+       
     );
 };
 
