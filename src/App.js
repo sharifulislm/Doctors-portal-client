@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Dashbord from './Pages/Dashbord/Dashbord';
 import Myappointment from './Pages/Dashbord/Myappointment';
 import MyReview from './Pages/Dashbord/MyReview';
+import Myhistory from './Pages/Dashbord/Myhistory';
 
 
 function App() {
@@ -27,11 +28,10 @@ function App() {
  <Route path='about' element={<About></About>}> </Route>
  <Route path='appointment' element={<RequireAuth><Appointment></Appointment></RequireAuth>}> </Route>
  {/* Nested routes start for dashbord  */}
- <Route path='dashbord' element={<RequireAuth>
-  <Dashbord></Dashbord>
-   </RequireAuth>}> 
+ <Route path='dashbord' element={<RequireAuth><Dashbord></Dashbord></RequireAuth>}> 
    <Route index element={<Myappointment></Myappointment>}></Route>
    <Route path='review' element={<MyReview></MyReview>}></Route>
+   <Route path='myhistory' element={<Myhistory></Myhistory>}></Route>
    </Route>
     {/* Nested routes for dashbord end  */}
  <Route path='login' element={<Login></Login>}> </Route>
