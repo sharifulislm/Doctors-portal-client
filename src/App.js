@@ -14,6 +14,7 @@ import Dashbord from './Pages/Dashbord/Dashbord';
 import Myappointment from './Pages/Dashbord/Myappointment';
 import MyReview from './Pages/Dashbord/MyReview';
 import Myhistory from './Pages/Dashbord/Myhistory';
+import Users from './Pages/Dashbord/Users';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
    <Route index element={<Myappointment></Myappointment>}></Route>
    <Route path='review' element={<MyReview></MyReview>}></Route>
    <Route path='myhistory' element={<Myhistory></Myhistory>}></Route>
+   <Route path='users' element={<Users></Users>}></Route>
    </Route>
     {/* Nested routes for dashbord end  */}
  <Route path='login' element={<Login></Login>}> </Route>
