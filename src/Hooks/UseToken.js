@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const UseToken = user => {
+const useToken = user => {
     const [ token, setToken] = useState('');
 
     useEffect(() => {
@@ -26,4 +26,4 @@ const UseToken = user => {
     } ,[user])
     return [token];
 }
-export default UseToken;
+export default useToken;
