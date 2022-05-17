@@ -16,6 +16,7 @@ import MyReview from './Pages/Dashbord/MyReview';
 import Myhistory from './Pages/Dashbord/Myhistory';
 import Users from './Pages/Dashbord/Users';
 import RequireAdmin from './Pages/Login/RequireAdmin';
+import AddDoctor from './Pages/Dashbord/AddDoctor';
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
     <div className="max-w-7xl mx-auto px-12">
       <Navbar></Navbar>
    
-
+      {/* firebase deploy */}
     
     <Routes>
  <Route path='/' element={<Home></Home>}> </Route>
@@ -35,6 +36,7 @@ function App() {
    <Route path='review' element={<MyReview></MyReview>}></Route>
    <Route path='myhistory' element={<Myhistory></Myhistory>}></Route>
    <Route path='user' element={<RequireAdmin><Users></Users></RequireAdmin>}></Route>
+   <Route path='adddoctor' element={<RequireAdmin><AddDoctor></AddDoctor></RequireAdmin>}></Route>
    </Route>
     {/* Nested routes for dashbord end  */}
  <Route path='login' element={<Login></Login>}> </Route>
