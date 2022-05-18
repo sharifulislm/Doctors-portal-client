@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 import Loading from '../Shared/Loading';
 
 const AddDoctor = () => {
@@ -8,15 +9,15 @@ const AddDoctor = () => {
  
     const { data:services, isLoading} = useQuery('services', ()=> fetch('http://localhost:5000/services').then(res => res.json()))
 
-    const imageStorageKey='07bde2c30f7e92f543e66df5770de0dc';
+    const imageStorageKey='23c391f82f824e590fefd0c32f04d351';
 
     const onSubmit = async data => {
         const image = data.image[0];
              const formData = new FormData();
-             formData.append('avaiar', image);
+             formData.append('image', image);
      
-        const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
-        fetch(url, {
+             const url = `https://api.imgbb.com/1/upload?key=${imageStorageKey}`;
+             fetch(url, {
             method: 'POST',
             body: formData
         })
@@ -39,9 +40,15 @@ const AddDoctor = () => {
                     },
                     body: JSON.stringify(doctor)
                 })
-                .then(res => res.json())
-                .then(inserted => {
-                    console.log('doctor', inserted);
+                .then(res =>res.json())
+                .then(inserted =>{
+                    if(inserted.insertedId){
+                        toast.success('Doctor added successfully')
+                       
+                    }
+                    else{
+                        toast.error('Failed to add the doctor');
+                    }
                 })
             }
         })
