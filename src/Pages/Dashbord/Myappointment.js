@@ -4,11 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import Loading from '../Shared/Loading';
 
 const Myappointment = () => {
     const [user] = useAuthState(auth);
  const [ appointments, setAppointments] = useState([]);
+ const [adminLoading, setAdminLoading] = useState(true);
+ 
   const navigate = useNavigate();
+
 
  useEffect(() => {
      if(user) {
@@ -31,11 +35,17 @@ const Myappointment = () => {
         .then(data => {
 
           setAppointments(data)
+          setAdminLoading(false);
         });
      }
 
 
  },[user])
+ 
+ if(adminLoading){
+  return <Loading></Loading>
+}
+
  
 
     return (
