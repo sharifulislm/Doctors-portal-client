@@ -1,8 +1,21 @@
 import React from 'react';
 import appointment from '../../assets/images/appointment.png';
-import BtnPrimary from '../Shared/BtnPrimary';
+import emailjs from '@emailjs/browser';
+
 
 const FromBox = () => {
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('service_w5ckfr1', 'template_4sllcq9', e.target, 'HmDKt3gAaokdpNhzA')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
+  };
+
+
   return (
     
 <div style={{background:`url(${appointment})`,
@@ -11,18 +24,18 @@ const FromBox = () => {
   <div className="hero-overlay bg-opacity-60"></div>
   <div className="hero-content text-center text-neutral-content">
 
-   <div>
+   <form onSubmit={sendEmail} >
    <div  className='text-center mb-12 '>
       <h3 className='text-xl font-bold uppercase' >Our services  </h3>
             <h2 className='text-4xl'> Services We Provide</h2>
       </div>
-   <input type="text" placeholder="Email Address" className="input input-bordered input-success w-full max-w-xs  mb-5" />
-   <input type="text" placeholder="Subject" className="input input-bordered input-success w-full max-w-xs mb-5" />
-   <textarea type="text" placeholder="Your message" className="input input-bordered input-success w-full max-w-xs mb-5  " />
+   <input type="text" placeholder="name" name='name' className="input w-full max-w-xs w-full max-w-xs text-black mb-5" />
+   <input type="email" placeholder="email" name='email' className="input w-full max-w-xs w-full max-w-xs text-black mb-5" />
+   <textarea type="text" placeholder="Your message" name='message' className="input w-full max-w-xs w-full max-w-xs text-black mb-5  " />
 
 <br></br>
-   <BtnPrimary> Sunmit</BtnPrimary>
-   </div>
+<input className='btn btn-secondary' type="submit" value='submit'/>
+   </form>
 
 
 
