@@ -17,7 +17,7 @@ const DoctorRow = ({doctor,index,refetch}) => {
                 if (data.deletedCount) {
                     console.log(data);
                     toast.success(`Doctor: ${name} is deleted.`)
-                   
+                    
                     refetch();
                 }
             })

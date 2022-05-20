@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import React, { useEffect, useState, } from 'react';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
@@ -8,10 +8,11 @@ import useToken from '../../Hooks/useToken';
 
 
 const Login = () => {
-  const { register, formState: { errors }, handleSubmit } = useForm();
+  const { register, formState: { errors }, handleSubmit} = useForm();
 
 
     const [handlesinupwithgoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+
 
     const [
       signInWithEmailAndPassword,
@@ -19,7 +20,14 @@ const Login = () => {
       loading,
       error,
     ] = useSignInWithEmailAndPassword(auth);
+
+    const [sendPasswordResetEmail, sending, errorrest] = useSendPasswordResetEmail(
+      auth
+    );
+    console.log(sending);
+    const [email,setemail]=useState('');
     const [token] = useToken(user || gUser);
+
 
     let signInError;
     const navigate = useNavigate();
@@ -37,13 +45,15 @@ const Login = () => {
       return <Loading></Loading>
   }
 
-  if(error || gError){
-      signInError= <p className='text-red-500'><small>{error?.message || gError?.message }</small></p>
+  if(error || gError ||errorrest){
+      signInError= <p className='text-red-500'><small>{error?.message || gError?.message ||errorrest?.message }</small></p>
   }
+
 
     const onSubmit = data => {
       console.log(data)
-      signInWithEmailAndPassword(data.email, data.password)
+      setemail(data.email)
+      signInWithEmailAndPassword(data.email, data.password)                                  
     }
 
     return (
@@ -59,7 +69,7 @@ const Login = () => {
 
   
   </label>
-  <input type="email" placeholder="email"
+  <input type="email" placeholder="email" 
    className="input input-bordered w-full max-w-xs"
    {...register("email",
     {
@@ -111,6 +121,15 @@ const Login = () => {
   </label>
 
 </div>
+<button
+        onClick={async () => {
+          await sendPasswordResetEmail(email);
+          alert('Sent email');
+        }}
+      >
+        Reset password
+      </button>
+
 {signInError}
       <input className='btn w-full max-w-xs text-white' type="submit" value="Login" />
     </form>
