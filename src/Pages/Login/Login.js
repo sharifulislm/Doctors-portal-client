@@ -8,6 +8,8 @@ import useToken from '../../Hooks/useToken';
 
 
 const Login = () => {
+  const [email,setemail]=useState('');
+  
   const { register, formState: { errors }, handleSubmit} = useForm();
 
 
@@ -25,7 +27,7 @@ const Login = () => {
       auth
     );
     console.log(sending);
-    const [email,setemail]=useState('');
+   
     const [token] = useToken(user || gUser);
 
 

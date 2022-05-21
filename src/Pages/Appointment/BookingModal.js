@@ -6,7 +6,7 @@ import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const BookingModal = ({date,treatment,setTreatment,refetch}) => {
-    const {_id, name, slots} = treatment;
+    const {_id, name, slots,price} = treatment;
     const [user, loading] = useAuthState(auth);
    
      const formatedDate = format(date, 'PP');
@@ -19,12 +19,13 @@ const BookingModal = ({date,treatment,setTreatment,refetch}) => {
          treatment : name,
          date: formatedDate,
          slot,
+         price,
          patient:user.email,
          patientName:user.displayName,
          phone: event.target.phone.value
      }
 
-     fetch('https://afternoon-bastion-83513.herokuapp.com/booking', {
+     fetch('http://localhost:5000/booking', {
          method: 'POST',
          headers: {
              'content-type': 'application/json'
@@ -67,7 +68,8 @@ console.log(data);
  </select>
     <input type="Name" name='name' disabled value={user?.displayName} placeholder="Your name" className="input input-bordered w-full max-w-xs" />
     <input type="email" placeholder="Email" disabled value={user?.email} className="input input-bordered w-full max-w-xs" />
-    <input type="text" placeholder="phone" name='phone' className="input input-bordered w-full max-w-xs" />
+    <input type="number" placeholder="price" disabled  value={price} name='phone' className="input input-bordered w-full max-w-xs" />
+    <input type="Number" placeholder="phone" name='phone' className="input input-bordered w-full max-w-xs" />
     <input type="submit" value="Submit" className="btn btn-secondary text-white w-full max-w-xs" />
     </form>
 

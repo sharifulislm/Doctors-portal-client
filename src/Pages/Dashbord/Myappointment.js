@@ -2,7 +2,7 @@
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 
@@ -16,7 +16,7 @@ const Myappointment = () => {
 
  useEffect(() => {
      if(user) {
-        fetch(`https://afternoon-bastion-83513.herokuapp.com/booking?patient=${user.email}`,{
+        fetch(`http://localhost:5000/booking?patient=${user.email}`,{
           method: 'GET',
           headers:{
             'authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -62,6 +62,7 @@ const Myappointment = () => {
         <th>Date</th>
         <th>Time </th>
         <th>Treatment </th>
+        <th>Payment </th>
       </tr>
     </thead>
     <tbody>
@@ -73,6 +74,8 @@ const Myappointment = () => {
                 <td>{a.date}</td>
                 <td>{a.slot}</td>
                 <td>{a.treatment}</td>
+                {(a.price && !a.paid) && <Link to={`/dashbord/Payment/${a._id}`}><button className='btn btn-xs btn-success'>pay</button></Link>}
+                {(a.price && a.paid) && <span className='text-success'>paid</span>}
                 
               </tr>
                 )
