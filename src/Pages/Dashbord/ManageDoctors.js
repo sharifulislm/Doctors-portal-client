@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import Loading from '../Shared/Loading';
 import DoctorRow from './DoctorRow';
+import Modal from './Modal';
 
 const ManageDoctors = () => {
+    const [deleteingdoctor ,setDeleteingdoctor]= useState(null);
     const {data: doctors, isLoading, refetch} = useQuery('doctors', ()=> fetch('http://localhost:5000/doctor' , {
         headers: {
             authorization: `Bearer ${localStorage.getItem('accessToken')}`
@@ -32,7 +34,9 @@ const ManageDoctors = () => {
     </thead>
     <tbody>
       {
-          doctors.map((doctor,index) => <DoctorRow key={doctor._id} doctor={doctor} refetch={refetch} index={index}></DoctorRow> )
+          doctors.map((doctor,index) => <DoctorRow key={doctor._id}
+           doctor={doctor} refetch={refetch} 
+           index={index} setDeleteingdoctor={setDeleteingdoctor}></DoctorRow> )
       }
   
       </tbody>
@@ -40,6 +44,12 @@ const ManageDoctors = () => {
   
     
 </div>
+{deleteingdoctor && <Modal
+deleteingdoctor={deleteingdoctor}
+refetch={refetch}
+setDeleteingdoctor={setDeleteingdoctor}
+>
+    </Modal>}
             
         </div>
     );
