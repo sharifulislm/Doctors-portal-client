@@ -6,7 +6,7 @@ import Modal from './Modal';
 
 const ManageDoctors = () => {
     const [deleteingdoctor ,setDeleteingdoctor]= useState(null);
-    const {data: doctors, isLoading, refetch} = useQuery('doctors', ()=> fetch('http://localhost:5000/doctor' , {
+    const {data: doctors, isLoading, refetch} = useQuery('doctors', ()=> fetch('https://afternoon-bastion-83513.herokuapp.com/doctor' , {
         headers: {
             authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }

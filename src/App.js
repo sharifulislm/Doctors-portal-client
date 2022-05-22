@@ -19,6 +19,7 @@ import RequireAdmin from './Pages/Login/RequireAdmin';
 import AddDoctor from './Pages/Dashbord/AddDoctor';
 import ManageDoctors from './Pages/Dashbord/ManageDoctors';
 import Payment from './Pages/Dashbord/Payment';
+import Contact from './Pages/Contact/Contact';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
     <Routes>
  <Route path='/' element={<Home></Home>}> </Route>
  <Route path='about' element={<About></About>}> </Route>
+ <Route path='Contact' element={<Contact></Contact>}> </Route>
  <Route path='appointment' element={<RequireAuth><Appointment></Appointment></RequireAuth>}> </Route>
  {/* Nested routes start for dashbord  */}
  <Route path='dashbord' element={<RequireAuth><Dashbord></Dashbord></RequireAuth>}> 

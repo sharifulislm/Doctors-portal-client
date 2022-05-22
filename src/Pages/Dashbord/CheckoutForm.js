@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import Loading from '../Shared/Loading';
 
 const CheckoutForm = ({ appointment }) => {
     const stripe = useStripe();
@@ -13,7 +14,7 @@ const CheckoutForm = ({ appointment }) => {
     const { _id, price, patient, patientName } = appointment;
 
     useEffect(() => {
-        fetch('http://localhost:5000/create-payment-intent', {
+        fetch('https://afternoon-bastion-83513.herokuapp.com/create-payment-intent', {
             method: 'POST',
             headers:{
                 'content-type': 'application/json',
@@ -41,6 +42,9 @@ const CheckoutForm = ({ appointment }) => {
 
         if (card === null) {
             return;
+        }
+        if(processing){
+            return <Loading></Loading>
         }
 
         const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -80,7 +84,7 @@ const CheckoutForm = ({ appointment }) => {
                 appointment: _id,
                 transactionId: paymentIntent.id
             }
-            fetch(`http://localhost:5000/booking/${_id}`, {
+            fetch(`https://afternoon-bastion-83513.herokuapp.com/booking/${_id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
@@ -122,10 +126,12 @@ const CheckoutForm = ({ appointment }) => {
                 cardError && <p className='text-red-500'>{cardError}</p>
             }
             {
-                success && <div className='text-green-500'>
+                success &&  <div className='text-green-500'>
                     <p>{success}  </p>
+              
                     <p>Your transaction Id: <span className="text-orange-500 font-bold">{transactionId}</span> </p>
                 </div>
+            
             }
         </>
     );
